@@ -1,1 +1,1 @@
-[![](https://jitpack.io/v/moe.aisia/kotlib.svg)](https://jitpack.io/#moe.aisia/kotlib)
+[![](https://jitpack.io/v/moe.aisia/kotlib.svg?style=flat-square)](https://jitpack.io/#moe.aisia/kotlib)
