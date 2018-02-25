@@ -1,0 +1,74 @@
+import org.jetbrains.kotlin.gradle.dsl.Coroutines
+
+buildscript {
+    ext.kotlin_version = "1.2.21"
+
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
+        classpath("org.jetbrains.dokka:dokka-gradle-plugin:0.9.16")
+    }
+}
+
+group = "moe.aisia.kotlin"
+version = "1.0"
+
+apply plugin: "kotlin"
+apply plugin: "org.jetbrains.dokka"
+
+repositories {
+    mavenCentral()
+    maven { url = "http://maven.aliyun.com/nexus/content/repositories/central" }
+    maven { url = "http://dl.bintray.com/kotlin/kotlinx" }
+}
+
+dependencies {
+    compile("org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version")
+    compile("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.1")
+    testCompile("org.jetbrains.kotlin:kotlin-reflect:$kotlin_version")
+    testCompile("junit:junit:4.12")
+    testCompile("io.kotlintest:kotlintest:2.0.7") {
+        exclude group: "org.jetbrains.kotlin", module: "kotlin-reflect"
+    }
+}
+
+compileJava {
+    sourceCompatibility = JavaVersion.VERSION_1_6
+}
+
+compileKotlin {
+    kotlinOptions {
+        suppressWarnings = true
+        verbose = true
+        freeCompilerArgs = ["-Xno-call-assertions",
+                            "-Xno-param-assertions",
+                            "-Xno-receiver-assertions"]
+    }
+}
+
+kotlin {
+    experimental.coroutines = Coroutines.ENABLE
+}
+
+dokka {
+    outputFormat = "html"
+    outputDirectory = javadoc.destinationDir
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: dokka) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
