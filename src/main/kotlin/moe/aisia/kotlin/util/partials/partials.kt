@@ -2,6 +2,9 @@
 
 package moe.aisia.kotlin.util.partials
 
+/**
+ * @suppress
+ */
 class Unit internal constructor()
 
 private val u = Unit()
